@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.navbar}>
-        <ConnectButton />
+        <ConnectButton chainStatus="icon" accountStatus="avatar" />
       </div>
     </div>
   );
