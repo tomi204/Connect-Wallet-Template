@@ -1,22 +1,42 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import {
-  injectedWallet,
-  rainbowWallet,
-  metaMaskWallet,
-  coinbaseWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
-import { Chain } from "wagmi";
-import { allChains } from "wagmi";
-const wallets = [
-  injectedWallet({ chains }),
-  rainbowWallet({ chains }),
-  metaMaskWallet({ chains }),
-  coinbaseWallet({ chains, appName: "My App" }),
-  walletConnectWallet({ chains }),
-];
+  getDefaultWallets,
+  RainbowKitProvider,
+  darkTheme,
+} from "@rainbow-me/rainbowkit";
+import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { infuraProvider } from "wagmi/providers/infura";
+import { publicProvider } from "wagmi/providers/public";
+
+const { chains, provider } = configureChains(
+  [
+    chain.mainnet,
+    chain.polygon,
+    chain.goerli,
+    chain.avalanche,
+    chain.polygonMumbai,
+  ],
+  [
+    infuraProvider({
+      apiKey: process.env.REACT_APP_WEB3APIKEY,
+      stallTimeout: 1_000,
+    }),
+
+    publicProvider(),
+  ]
+);
+const { connectors } = getDefaultWallets({
+  appName: "Web3 Ecommerce",
+  chains,
+});
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -26,7 +46,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <WagmiConfig client={wagmiClient}>
+          <RainbowKitProvider
+            modalSize="compact"
+            theme={darkTheme({
+              ...darkTheme.accentColors.green,
+            })}
+            chains={chains}
+          ></RainbowKitProvider>
+        </WagmiConfig>
+      </main>
     </div>
   );
 }

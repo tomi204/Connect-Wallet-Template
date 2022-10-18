@@ -1,7 +1,16 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return;
+  <WagmiConfig client={wagmiClient}>
+    <RainbowKitProvider
+      modalSize="compact"
+      theme={darkTheme({
+        ...darkTheme.accentColors.green,
+      })}
+      chains={chains}
+    ></RainbowKitProvider>
+  </WagmiConfig>;
 }
 
-export default MyApp
+export default MyApp;
