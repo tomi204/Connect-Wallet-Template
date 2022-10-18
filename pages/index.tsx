@@ -15,7 +15,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.navbar}>
-        <ConnectButton chainStatus="icon" accountStatus="avatar" />
+        <ConnectButton
+          chainStatus={{
+            smallScreen: "icon",
+            largeScreen: "full",
+          }}
+          accountStatus={{
+            smallScreen: "avatar",
+            largeScreen: "full",
+          }}
+        />
       </div>
     </div>
   );
